@@ -1,0 +1,301 @@
+<html>
+
+<head>
+
+	<script data-ad-client="ca-pub-6951865248016074" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+  
+  <link rel="stylesheet" href="https://fengyuanchen.github.io/pickerjs/css/picker.css">
+  <link rel="stylesheet" href="https://fengyuanchen.github.io/pickerjs/css/main.css">
+  
+
+  <script src="https://fengyuanchen.github.io/pickerjs/js/picker.js"></script>
+
+  <script src="https://fengyuanchen.github.io/pickerjs/js/main.js"></script>
+  
+  
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/datejs/date.js"></script>
+  
+  <script src="res.js"></script>
+  
+  
+  <style>
+  
+	tr , td{ height:50px; padding-left: 5px; text-align: center; }
+	body{
+	background: url("https://www.speedrun.com/themes/goiwbf/background.png?v=bd30d704");
+	background-position-y: -207px;
+	}
+
+	body{color: #d4d4d4;}
+  </style>
+  
+</head>
+
+<script>
+
+var topX = new Array(); //<--- This will be the final list containing the top x
+//--------------------------------------------------------------------------------
+
+
+var sortbydate = new Array();
+var users = new Array();
+var withoutobsoleteruns = new Array();
+var speed = 6;
+
+function allVerifiedRunsSortedByGametime()
+{
+//GETTING ALL VERIFIED RUNS
+	var x = 0;
+	res.length = 0;
+    while( x <= 3700  )
+    {
+    $.ajax({
+        type: "GET", 
+        dataType: 'text',
+        url: "https://www.speedrun.com/api/v1/runs?game=pd0wx9w1&max=200&status=verified&offset="+x,
+        async: false,
+        contentType: "text",
+        success: function (msg) {
+
+          var myArr = JSON.parse(msg);
+          
+          for(var i = 0 ; i <  myArr['data'].length ; i++ )
+          {
+            res.push(myArr['data'][i]);
+          }
+        }
+     }); 
+      x+= 200;
+    }
+	
+//ADDING PLAYERS NAME TO EACH RUN
+	for( var i = 0 ; i < res.length ; i++ )
+	{
+		$.ajax({
+			type: "get",
+			async:false,
+			url: "https://www.speedrun.com/api/v1/users/"+res[i]['players'][0]['id'],
+			success: function (response) {
+				res[i]['players'][0]['name'] = response['data']['names']['international'];
+			}
+		});
+	}
+	
+//SORTING BY GAMETIME
+	res.sort(function(a, b){return a['times']['primary_t'] - b['times']['primary_t']});
+}
+
+
+
+//The allVerifiedRunsSortedByGametime() function has to be called atleast once before calling this
+//since we use the result from it here
+function runsByDate(y,m,d,h,min,s,X)
+{
+//SORTING BY A SPECIFIC DATE
+	sortbydate.length = 0;	
+	for(var o = 0 ; o < res.length ; o++)
+	{
+		var d1 = new Date(y,m,d);
+		
+		d1.setHours(h);
+		d1.setMinutes(m); 
+		d1.setSeconds(s);
+		var d2 = new Date(	res[o]['status']['verify-date'].split('T')[0].split('-')[0]  ,
+							res[o]['status']['verify-date'].split('T')[0].split('-')[1]  ,
+							res[o]['status']['verify-date'].split('T')[0].split('-')[2]  );
+		d2.setHours(res[o]['status']['verify-date'].split('T')[1].split(':')[0]);
+		d2.setMinutes(res[o]['status']['verify-date'].split('T')[1].split(':')[1]); 
+		d2.setSeconds(res[o]['status']['verify-date'].split('T')[1].split(':')[2].split('Z')[0])
+		
+		if( d2.getTime() <= d1.getTime()  ){
+		sortbydate.push( res[o] );
+		}
+	}
+	
+//REMOVING OBSOLETE RUNS
+	users.length = 0;
+	withoutobsoleteruns.length = 0;
+	for(var o = 0 ; o < sortbydate.length ; o++)
+	{
+		if( !users.includes( sortbydate[o]['players'][0].id ) )
+		{
+			users.push(sortbydate[o]['players'][0].id);
+			withoutobsoleteruns.push(sortbydate[o]);
+		}
+	}
+
+//TOP X
+	topX.length = 0;
+	for(var o = 0 ; o < X ; o++)
+	{ topX.push(withoutobsoleteruns[o]); }
+}
+
+var completeDate = new Date(2017,09,21,0,0,0);
+
+var topXn = 10;
+function getRuns()
+{
+
+	runsByDate(completeDate.getFullYear(),
+			   completeDate.getMonth()+1,
+			   completeDate.getDate(),
+			   completeDate.getHours(),
+			   completeDate.getMinutes(),
+			   completeDate.getSeconds(),topXn);
+	
+	completeDate.add(speed).hours();
+  
+	document.getElementById('t').innerHTML = '<col width="15"> <col width="150"> <col width="160">';
+
+	for( var i = 0 ; i < topX.length ; i++)
+	{
+		if( i == topXn ) break;
+		
+		var
+		m = topX[i]['times']['primary'].split('PT')[1].split('M')[0]+'m ',
+		s = topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] + 's ' ,
+		ms;
+		withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.').length == 1 ?
+		ms = '' : ms = withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[1].split('S')[0]+'ms';
+		
+		document.getElementById('t').innerHTML += 
+		'<tr> <td> ' + (i+1) + ' </td> <td> ' + topX[i]['players'][0]['name'] + ' </td> <td> ' 
+		+ m		+ s		+ ms + '</td> </tr>';
+	}
+}
+
+var sI = 
+window.setInterval(function(){
+
+if( completeDate > new Date() )clearInterval(sI);
+
+  document.getElementById('shownDate').innerHTML = 
+	 completeDate.getFullYear() 
+	+ '-'+( (completeDate.getMonth()+1) < 10 ? '0'+ (completeDate.getMonth()+1) : (completeDate.getMonth()+1) )
+	+ '-'+completeDate.getDate() +
+	' ' + (completeDate.getHours() < 10 ? '0'+completeDate.getHours() : completeDate.getHours() )  + ':0' +completeDate.getMinutes()+ ':0' +completeDate.getSeconds() + ' UTC+0';
+  
+  getRuns();
+  
+}, 65);
+
+function pause()
+{
+
+	clearInterval(sI);
+
+}
+function play()
+{
+
+clearInterval(sI);
+
+	sI = 
+window.setInterval(function(){
+
+if( completeDate > new Date() )clearInterval(sI);
+
+  document.getElementById('shownDate').innerHTML = 
+	 completeDate.getFullYear() 
+	+ '-'+( (completeDate.getMonth()+1) < 10 ? '0'+ (completeDate.getMonth()+1) : (completeDate.getMonth()+1) )
+	+ '-'+completeDate.getDate() +
+	' ' + (completeDate.getHours() < 10 ? '0'+completeDate.getHours() : completeDate.getHours() )  + ':0' +completeDate.getMinutes()+ ':0' +completeDate.getSeconds() + ' UTC+0';
+  
+  getRuns();
+  
+}, 65);
+
+}
+  
+var pickerDate;
+function pp()
+{ pickerDate = new Picker(document.querySelector('.js-full-picker'), {
+  controls: true,
+  format: 'YYYY-MM-DD HH:mm:ss',
+});}
+
+function changeDate()
+{
+	completeDate = new Date(datepicker.value.split(' ')[0].split('-')[0],datepicker.value.split(' ')[0].split('-')[1]-1,datepicker.value.split(' ')[0].split('-')[2],datepicker.value.split(' ')[1].split(':')[0],datepicker.value.split(' ')[1].split(':')[1],datepicker.value.split(' ')[1].split(':')[2]);
+	getRuns();
+	document.getElementById('shownDate').innerHTML = 
+	 completeDate.getFullYear() 
+	+ '-'+( (completeDate.getMonth()+1) < 10 ? '0'+ (completeDate.getMonth()+1) : (completeDate.getMonth()+1) )
+	+ '-'+completeDate.getDate() +
+	' ' + (completeDate.getHours() < 10 ? '0'+completeDate.getHours() : completeDate.getHours() )  + ':0' +completeDate.getMinutes()+ ':0' +completeDate.getSeconds() + ' UTC+0';
+  
+}
+
+</script>
+
+
+<body>
+
+
+<center>
+
+<br/>
+
+<div style="font-weight: bold;font-size: 19px;font-family: Arial;margin-bottom: 10px;color: #ebebeb;" >
+<br/>
+<input type="button" onclick="pause(); completeDate = new Date(2017,09,21,0,0,0); play();"  value ="↺" style="width: 100px;height: 50px;font-size: 35px;" />
+<input type="button" onclick="pause()" value="⏸" style="width: 100px;height: 50px;font-size: 35px;" />
+<input type="button" onclick="play()"  value ="▶" style="width: 100px;height: 50px;font-size: 35px;" />
+
+<br/>
+<br/>
+ <label for="hours">Speed (hours): </label>
+
+<select id="hours">
+  <option value="1" onclick="speed = 1;">1</option>
+  <option value="2" onclick="speed = 2;">2</option>
+  <option value="3" onclick="speed = 3;">3</option>
+  <option value="4" onclick="speed = 4;">4</option>
+  <option value="5" onclick="speed = 5;">5</option>
+  <option value="6" onclick="speed = 6;">6</option>
+  <option value="7" onclick="speed = 7;">7</option>
+  <option value="8" onclick="speed = 8;">8</option>
+  <option value="9" onclick="speed = 9;">9</option>
+  <option value="10" selected="selected" onclick="speed = 10;">10</option>
+  <option value="11" onclick="speed = 11;">11</option>
+  <option value="12" onclick="speed = 12;">12</option>
+  <option value="13" onclick="speed = 13;">13</option>
+  <option value="14" onclick="speed = 14;">14</option>
+  <option value="15" onclick="speed = 15;">15</option>
+  <option value="16" onclick="speed = 16;">16</option>
+  <option value="17" onclick="speed = 17;">17</option>
+  <option value="18" onclick="speed = 18;">18</option>
+  <option value="19" onclick="speed = 19;">19</option>
+  <option value="20" onclick="speed = 20;">20</option>
+  <option value="21" onclick="speed = 21;">21</option>
+  <option value="22" onclick="speed = 22;">22</option>
+  <option value="23" onclick="speed = 23;">23</option>
+  <option value="24" onclick="speed = 24;">24</option>
+</select> 
+
+ Pick a date : <input type="text" id="datepicker" onclick="pp()" onChange="changeDate()" class="form-control js-full-picker" value="2017-10-21 00:00:00">
+ <br/>
+ <br/>
+ top X: <input type="text" id="topX" onChange="topXn = this.value; getRuns();" value="10">
+
+
+</div>
+
+<br/>
+
+<div id="shownDate" style="font-weight: bold;font-size: 30px;font-family: Arial;margin-bottom: 10px;color: #ebebeb;" ></div>
+
+<table id="t" border="1" style="background: #3a3a3a;border: black;border-radius: 2px;border-collapse: collapse;width: 600px; opacity: 0.8; font-size: 25px; font-family: Arial;font-weight: bold;">
+
+</table>
+
+<div id="list" style="color:white;" ></div>
+
+<div id="test" />
+</center>
+
+
+</body>
