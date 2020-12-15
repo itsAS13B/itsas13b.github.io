@@ -101,6 +101,7 @@ var withoutobsoleteruns = new Array();
 var speed = 6;
 var x = 0;
 var i = 0;
+var country = 'all';
 function doAjax(x) {
    setTimeout(function(){  $.ajax({
 		type: "GET", 
@@ -187,10 +188,21 @@ function runsByDate(y,m,d,h,min,s,X)
 	withoutobsoleteruns.length = 0;
 	for(var o = 0 ; o < sortbydate.length ; o++)
 	{
-		if( !users.includes( sortbydate[o]['players'][0].id ) )
+		if( !users.includes( sortbydate[o]['players'][0].id )  )
 		{
-			users.push(sortbydate[o]['players'][0].id);
-			withoutobsoleteruns.push(sortbydate[o]);
+			if( country == 'all' )
+			{
+				users.push(sortbydate[o]['players'][0].id);
+				withoutobsoleteruns.push(sortbydate[o]);
+			}
+			else
+			{
+				if( sortbydate[o]['players'][0].countrycode == country )
+				{
+				users.push(sortbydate[o]['players'][0].id);
+				withoutobsoleteruns.push(sortbydate[o]);
+				}
+			}
 		}
 	}
 
@@ -353,6 +365,11 @@ function changeDate()
   
 }
 
+function changeC(c)
+{
+	country = c;
+	getRuns();
+}
 </script>
 
 
@@ -416,8 +433,276 @@ function changeDate()
 
 </div>
  <br/>
- Top X: <input type="text" id="topX" onChange="topXn = this.value; getRuns();" value="10">
+<b>
 
+ <label for="country">Country: </label>
+ 
+<select id="country" style="padding-top: 4px;height: 32px;padding-bottom: 5px;">
+<option value="all" selected  onclick="changeC('all')"> All</option>
+<option value=""  onclick="changeC('')">   </option>
+<option value="us"  onclick="changeC('us')"> United States  </option>
+<option value="ca"  onclick="changeC('ca')"> Canada  </option>
+<option value="rs"  onclick="changeC('rs')"> Serbia  </option>
+<option value="jp"  onclick="changeC('jp')"> Japan  </option>
+<option value="br"  onclick="changeC('br')"> Brazil  </option>
+<option value="cn"  onclick="changeC('cn')"> China  </option>
+<option value="ru"  onclick="changeC('ru')"> Russia  </option>
+<option value="gb"  onclick="changeC('gb')"> United Kingdom  </option>
+<option value="kr"  onclick="changeC('kr')"> South Korea  </option>
+<option value="no"  onclick="changeC('no')"> Norway  </option>
+<option value="au"  onclick="changeC('au')"> Australia  </option>
+<option value="fr"  onclick="changeC('fr')"> France  </option>
+<option value="de"  onclick="changeC('de')"> Germany  </option>
+<option value="in"  onclick="changeC('in')"> India  </option>
+<option value="fi"  onclick="changeC('fi')"> Finland  </option>
+<option value="ie"  onclick="changeC('ie')"> Ireland  </option>
+<option value="il"  onclick="changeC('il')"> Israel  </option>
+<option value="se"  onclick="changeC('se')"> Sweden  </option>
+<option value="es"  onclick="changeC('es')"> Spain  </option>
+<option value="ar"  onclick="changeC('ar')"> Argentina  </option>
+<option value="be"  onclick="changeC('be')"> Belgium  </option>
+<option value="af"  onclick="changeC('af')"> Afghanistan </option>
+<option value="al"  onclick="changeC('al')"> Albania  </option>
+<option value="dz"  onclick="changeC('dz')"> Algeria  </option>
+<option value="as"  onclick="changeC('as')"> American Samoa  </option>
+<option value="ad"  onclick="changeC('ad')"> Andorra  </option>
+<option value="ao"  onclick="changeC('ao')"> Angola  </option>
+<option value="ai"  onclick="changeC('ai')"> Anguilla  </option>
+<option value="aq"  onclick="changeC('aq')"> Antarctica  </option>
+<option value="ag"  onclick="changeC('ag')"> Antigua and Barbuda  </option>
+<option value="am"  onclick="changeC('am')"> Armenia  </option>
+<option value="aw"  onclick="changeC('aw')"> Aruba  </option>
+<option value="at"  onclick="changeC('at')"> Austria  </option>
+<option value="az"  onclick="changeC('az')"> Azerbaijan  </option>
+<option value="bs"  onclick="changeC('bs')"> Bahamas  </option>
+<option value="bh"  onclick="changeC('bh')"> Bahrain  </option>
+<option value="bd"  onclick="changeC('bd')"> Bangladesh  </option>
+<option value="bb"  onclick="changeC('bb')"> Barbados  </option>
+<option value="by"  onclick="changeC('by')"> Belarus  </option>
+<option value="bz"  onclick="changeC('bz')"> Belize  </option>
+<option value="bj"  onclick="changeC('bj')"> Benin  </option>
+<option value="bm"  onclick="changeC('bm')"> Bermuda  </option>
+<option value="bt"  onclick="changeC('bt')"> Bhutan  </option>
+<option value="bo"  onclick="changeC('bo')"> Bolivia  </option>
+<option value="ba"  onclick="changeC('ba')"> Bosnia and Herzegovina  </option>
+<option value="bw"  onclick="changeC('bw')"> Botswana  </option>
+<option value="bv"  onclick="changeC('bv')"> Bouvet Island  </option>
+<option value="io"  onclick="changeC('io')"> British Indian Ocean Territory  </option>
+<option value="bn"  onclick="changeC('bn')"> Brunei  </option>
+<option value="bg"  onclick="changeC('bg')"> Bulgaria  </option>
+<option value="bf"  onclick="changeC('bf')"> Burkina Faso  </option>
+<option value="bi"  onclick="changeC('bi')"> Burundi  </option>
+<option value="kh"  onclick="changeC('kh')"> Cambodia  </option>
+<option value="cm"  onclick="changeC('cm')"> Cameroon  </option>
+<option value="cv"  onclick="changeC('cv')"> Cape Verde  </option>
+<option value="bq"  onclick="changeC('bq')"> Caribbean Netherlands</option>  
+<option value="ky"  onclick="changeC('ky')"> Cayman Islands  </option>
+<option value="cf"  onclick="changeC('cf')"> Central African Republic </option> 
+<option value="td"  onclick="changeC('td')"> Chad  </option>
+<option value="cl"  onclick="changeC('cl')"> Chile  </option>
+<option value="cn"  onclick="changeC('cn')"> China  </option>
+<option value="cx"  onclick="changeC('cx')"> Christmas Island</option>  
+<option value="cc"  onclick="changeC('cc')"> Cocos (Keeling) Islands  </option>
+<option value="co"  onclick="changeC('co')"> Colombia  </option>
+<option value="km"  onclick="changeC('km')"> Comoros  </option>
+<option value="cg"  onclick="changeC('cg')"> Congo  </option>
+<option value="cd"  onclick="changeC('cd')"> Congo, Democratic Republic  </option>
+<option value="ck"  onclick="changeC('ck')"> Cook Islands  </option>
+<option value="cr"  onclick="changeC('cr')"> Costa Rica  </option>
+<option value="hr"  onclick="changeC('hr')"> Croatia  </option>
+<option value="cu"  onclick="changeC('cu')"> Cuba  </option>
+<option value="cw"  onclick="changeC('cw')"> Curaçao  </option>
+<option value="cy"  onclick="changeC('cy')"> Cyprus  </option>
+<option value="cz"  onclick="changeC('cz')"> Czech Republic  </option>
+<option value="dk"  onclick="changeC('dk')"> Denmark  </option>
+<option value="dj"  onclick="changeC('dj')"> Djibouti  </option>
+<option value="dm"  onclick="changeC('dm')"> Dominica  </option>
+<option value="do"  onclick="changeC('do')"> Dominican Republic </option> 
+<option value="ec"  onclick="changeC('ec')"> Ecuador</option>
+<option value="eng" onclick="changeC('eng')"> England  </option>
+<option value="nir" onclick="changeC('nir')"> Northern Ireland  </option>
+<option value="sct" onclick="changeC('sct')"> Scotland  </option>
+<option value="wls" onclick="changeC('wls')"> Wales  </option>
+<option value="eg"  onclick="changeC('eg')"> Egypt  </option>
+<option value="sv"  onclick="changeC('sv')"> El Salvador  </option>
+<option value="gq"  onclick="changeC('gq')"> Equatorial Guinea  </option>
+<option value="er"  onclick="changeC('er')"> Eritrea  </option>
+<option value="eo"  onclick="changeC('eo')"> Esperanto  </option>
+<option value="ee"  onclick="changeC('ee')"> Estonia  </option>
+<option value="et"  onclick="changeC('et')"> Ethiopia  </option>
+<option value="eu"  onclick="changeC('eu')"> European Union  </option>
+<option value="fk"  onclick="changeC('fk')"> Falkland Islands  </option>
+<option value="fo"  onclick="changeC('fo')"> Faroe Islands  </option>
+<option value="fj"  onclick="changeC('fj')"> Fiji  </option>
+<option value="gf"  onclick="changeC('gf')"> French Guiana  </option>
+<option value="pf"  onclick="changeC('pf')"> French Polynesia  </option>
+<option value="tf"  onclick="changeC('tf')"> French Southern Territories</option>  
+<option value="ga"  onclick="changeC('ga')"> Gabon  </option>
+<option value="gm"  onclick="changeC('gm')"> Gambia  </option>
+<option value="ge"  onclick="changeC('ge')"> Georgia  </option>
+<option value="gh"  onclick="changeC('gh')"> Ghana  </option>
+<option value="gi"  onclick="changeC('gi')"> Gibraltar  </option>
+<option value="gr"  onclick="changeC('gr')"> Greece  </option>
+<option value="gl"  onclick="changeC('gl')"> Greenland  </option>
+<option value="gd"  onclick="changeC('gd')"> Grenada  </option>
+<option value="gp"  onclick="changeC('gp')"> Guadeloupe  </option>
+<option value="gu"  onclick="changeC('gu')"> Guam  </option>
+<option value="gt"  onclick="changeC('gt')"> Guatemala  </option>
+<option value="gg"  onclick="changeC('gg')"> Guernsey  </option>
+<option value="gn"  onclick="changeC('gn')"> Guinea  </option>
+<option value="gw"  onclick="changeC('gw')"> Guinea-Bissau  </option>
+<option value="gy"  onclick="changeC('gy')"> Guyana  </option>
+<option value="ht"  onclick="changeC('ht')"> Haiti  </option>
+<option value="hm"  onclick="changeC('hm')"> Heard Island  </option>
+<option value="hn"  onclick="changeC('hn')"> Honduras  </option>
+<option value="hk"  onclick="changeC('hk')"> Hong Kong  </option>
+<option value="hu"  onclick="changeC('hu')"> Hungary  </option>
+<option value="is"  onclick="changeC('is')"> Iceland  </option>
+<option value="id"  onclick="changeC('id')"> Indonesia  </option>
+<option value="ir"  onclick="changeC('ir')"> Iran  </option>
+<option value="iq"  onclick="changeC('iq')"> Iraq  </option>
+<option value="im"  onclick="changeC('im')"> Isle of Man  </option>
+<option value="it"  onclick="changeC('it')"> Italy  </option>
+<option value="ci"  onclick="changeC('ci')"> Ivory Coast  </option>
+<option value="jm"  onclick="changeC('jm')"> Jamaica  </option>
+<option value="je"  onclick="changeC('je')"> Jersey  </option>
+<option value="jo"  onclick="changeC('jo')"> Jordan  </option>
+<option value="kz"  onclick="changeC('kz')"> Kazakhstan  </option>
+<option value="ke"  onclick="changeC('ke')"> Kenya  </option>
+<option value="ki"  onclick="changeC('ki')"> Kiribati  </option>
+<option value="xk"  onclick="changeC('xk')"> Kosovo  </option>
+<option value="kw"  onclick="changeC('kw')"> Kuwait  </option>
+<option value="kg"  onclick="changeC('kg')"> Kyrgyzstan  </option>
+<option value="la"  onclick="changeC('la')"> Laos  </option>
+<option value="lv"  onclick="changeC('lv')"> Latvia  </option>
+<option value="lb"  onclick="changeC('lb')"> Lebanon  </option>
+<option value="ls"  onclick="changeC('ls')"> Lesotho  </option>
+<option value="lr"  onclick="changeC('lr')"> Liberia  </option>
+<option value="ly"  onclick="changeC('ly')"> Libya  </option>
+<option value="li"  onclick="changeC('li')"> Liechtenstein  </option>
+<option value="lt"  onclick="changeC('lt')"> Lithuania  </option>
+<option value="lu"  onclick="changeC('lu')"> Luxembourg  </option>
+<option value="mo"  onclick="changeC('mo')"> Macau  </option>
+<option value="mk"  onclick="changeC('mk')"> Macedonia  </option>
+<option value="mg"  onclick="changeC('mg')"> Madagascar  </option>
+<option value="mw"  onclick="changeC('mw')"> Malawi  </option>
+<option value="my"  onclick="changeC('my')"> Malaysia  </option>
+<option value="mv"  onclick="changeC('mv')"> Maldives  </option>
+<option value="ml"  onclick="changeC('ml')"> Mali  </option>
+<option value="mt"  onclick="changeC('mt')"> Malta  </option>
+<option value="mh"  onclick="changeC('mh')"> Marshall Islands</option>  
+<option value="mq"  onclick="changeC('mq')"> Martinique  </option>
+<option value="mr"  onclick="changeC('mr')"> Mauritania  </option>
+<option value="mu"  onclick="changeC('mu')"> Mauritius  </option>
+<option value="yt"  onclick="changeC('yt')"> Mayotte  </option>
+<option value="mx"  onclick="changeC('mx')"> Mexico  </option>
+<option value="fm"  onclick="changeC('fm')"> Micronesia  </option>
+<option value="md"  onclick="changeC('md')"> Moldova  </option>
+<option value="mc"  onclick="changeC('mc')"> Monaco  </option>
+<option value="mn"  onclick="changeC('mn')"> Mongolia  </option>
+<option value="me"  onclick="changeC('me')"> Montenegro  </option>
+<option value="ms"  onclick="changeC('ms')"> Montserrat  </option>
+<option value="ma"  onclick="changeC('ma')"> Morocco  </option>
+<option value="mz"  onclick="changeC('mz')"> Mozambique  </option>
+<option value="mm"  onclick="changeC('mm')"> Myanmar  </option>
+<option value="na"  onclick="changeC('na')"> Namibia  </option>
+<option value="nr"  onclick="changeC('nr')"> Nauru  </option>
+<option value="np"  onclick="changeC('np')"> Nepal</option>
+<option value="nl"  onclick="changeC('nl')"> Netherlands  </option>
+<option value="nc"  onclick="changeC('nc')"> New Caledonia  </option>
+<option value="nz"  onclick="changeC('nz')"> New Zealand  </option>
+<option value="ni"  onclick="changeC('ni')"> Nicaragua  </option>
+<option value="ne"  onclick="changeC('ne')"> Niger  </option>
+<option value="ng"  onclick="changeC('ng')"> Nigeria  </option>
+<option value="nu"  onclick="changeC('nu')"> Niue  </option>
+<option value="nf"  onclick="changeC('nf')"> Norfolk Island </option> 
+<option value="kp"  onclick="changeC('kp')"> North Korea  </option>
+<option value="mp"  onclick="changeC('mp')"> Northern Mariana Islands  </option>
+<option value="om"  onclick="changeC('om')"> Oman  </option>
+<option value="pk"  onclick="changeC('pk')"> Pakistan  </option>
+<option value="pw"  onclick="changeC('pw')"> Palau  </option>
+<option value="ps"  onclick="changeC('ps')"> Palestine  </option>
+<option value="pa"  onclick="changeC('pa')"> Panama  </option>
+<option value="pg"  onclick="changeC('pg')"> Papua New Guinea </option> 
+<option value="py"  onclick="changeC('py')"> Paraguay  </option>
+<option value="pe"  onclick="changeC('pe')"> Peru  </option>
+<option value="ph"  onclick="changeC('ph')"> Philippines  </option>
+<option value="pn"  onclick="changeC('pn')"> Pitcairn  </option>
+<option value="pl"  onclick="changeC('pl')"> Poland  </option>
+<option value="pt"  onclick="changeC('pt')"> Portugal  </option>
+<option value="pr"  onclick="changeC('pr')"> Puerto Rico  </option>
+<option value="qa"  onclick="changeC('qa')"> Qatar  </option>
+<option value="ro"  onclick="changeC('ro')"> Romania  </option>
+<option value="rw"  onclick="changeC('rw')"> Rwanda  </option>
+<option value="re"  onclick="changeC('re')"> Réunion  </option>
+<option value="bl"  onclick="changeC('bl')"> Saint Barthélemy  </option>
+<option value="sh"  onclick="changeC('sh')"> Saint Helena  </option>
+<option value="kn"  onclick="changeC('kn')"> Saint Kitts and Nevis  </option>
+<option value="lc"  onclick="changeC('lc')"> Saint Lucia  </option>
+<option value="mf"  onclick="changeC('mf')"> Saint Martin  </option>
+<option value="pm"  onclick="changeC('pm')"> Saint Pierre and Miquelon  </option>
+<option value="vc"  onclick="changeC('vc')"> Saint Vincent  </option>
+<option value="ws"  onclick="changeC('ws')"> Samoa  </option>
+<option value="sm"  onclick="changeC('sm')"> San Marino  </option>
+<option value="st"  onclick="changeC('st')"> Sao Tome and Principe</option>  
+<option value="sa"  onclick="changeC('sa')"> Saudi Arabia  </option>
+<option value="sn"  onclick="changeC('sn')"> Senegal  </option>
+<option value="sc"  onclick="changeC('sc')"> Seychelles  </option>
+<option value="sl"  onclick="changeC('sl')"> Sierra Leone  </option>
+<option value="sg"  onclick="changeC('sg')"> Singapore  </option>
+<option value="sx"  onclick="changeC('sx')"> Sint Maarten  </option>
+<option value="sk"  onclick="changeC('sk')"> Slovakia  </option>
+<option value="si"  onclick="changeC('si')"> Slovenia  </option>
+<option value="sb"  onclick="changeC('sb')"> Solomon Islands  </option>
+<option value="so"  onclick="changeC('so')"> Somalia  </option>
+<option value="za"  onclick="changeC('za')"> South Africa  </option>
+<option value="gs"  onclick="changeC('gs')"> South Georgia  </option>
+<option value="ss"  onclick="changeC('ss')"> South Sudan  </option>
+<option value="lk"  onclick="changeC('lk')"> Sri Lanka  </option>
+<option value="sd"  onclick="changeC('sd')"> Sudan  </option>
+<option value="sr"  onclick="changeC('sr')"> Suriname  </option>
+<option value="sj"  onclick="changeC('sj')"> Svalbard and Jan Mayen</option>  
+<option value="sz"  onclick="changeC('sz')"> Swaziland  </option>
+<option value="ch"  onclick="changeC('ch')"> Switzerland</option>
+<option value="sy"  onclick="changeC('sy')"> Syrian Arab Republic  </option>
+<option value="tw"  onclick="changeC('tw')"> Taiwan  </option>
+<option value="tj"  onclick="changeC('tj')"> Tajikistan  </option>
+<option value="tz"  onclick="changeC('tz')"> Tanzania  </option>
+<option value="th"  onclick="changeC('th')"> Thailand  </option>
+<option value="tl"  onclick="changeC('tl')"> Timor-Leste  </option>
+<option value="tg"  onclick="changeC('tg')"> Togo  </option>
+<option value="tk"  onclick="changeC('tk')"> Tokelau  </option>
+<option value="to"  onclick="changeC('to')"> Tonga  </option>
+<option value="tt"  onclick="changeC('tt')"> Trinidad and Tobago  </option>
+<option value="tn"  onclick="changeC('tn')"> Tunisia  </option>
+<option value="tr"  onclick="changeC('tr')"> Turkey  </option>
+<option value="tm"  onclick="changeC('tm')"> Turkmenistan  </option>
+<option value="tc"  onclick="changeC('tc')"> Turks and Caicos Islands</option>  
+<option value="tv"  onclick="changeC('tv')"> Tuvalu  </option>
+<option value="um"  onclick="changeC('um')"> U.S. Minor Outlying Islands  </option>
+<option value="ug"  onclick="changeC('ug')"> Uganda  </option>
+<option value="ua"  onclick="changeC('ua')"> Ukraine  </option>
+<option value="ae"  onclick="changeC('ae')"> United Arab Emirates  </option>
+<option value="uy"  onclick="changeC('uy')"> Uruguay  </option>
+<option value="uz"  onclick="changeC('uz')"> Uzbekistan  </option>
+<option value="vh"  onclick="changeC('vh')"> Valhalla</option>
+<option value="vu"  onclick="changeC('vu')"> Vanuatu  </option>
+<option value="va"  onclick="changeC('va')"> Vatican City</option>
+<option value="ve"  onclick="changeC('ve')"> Venezuela  </option>
+<option value="vn"  onclick="changeC('vn')"> Vietnam  </option>
+<option value="vg"  onclick="changeC('vg')"> Virgin Islands, British  </option>
+<option value="vi"  onclick="changeC('vi')"> Virgin Islands, U.S.  </option>
+<option value="wf"  onclick="changeC('wf')"> Wallis and Futuna  </option>
+<option value="eh"  onclick="changeC('eh')"> Western Sahara  </option>
+<option value="ye"  onclick="changeC('ye')"> Yemen  </option>
+<option value="zm"  onclick="changeC('zm')"> Zambia  </option>
+<option value="zw"  onclick="changeC('zw')"> Zimbabwe  </option>
+<option value="ax"  onclick="changeC('ax')"> Åland Islands </option>
+</select> 
+
+ <label for="topx">Top X: </label> <input type="text" id="topX" onChange="topXn = this.value; getRuns();" value="10">
+
+</b>
 
 </div>
 
