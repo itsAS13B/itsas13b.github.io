@@ -237,12 +237,14 @@ function getRuns()
 		
 		var
 		m = topX[i]['times']['primary'].split('PT')[1].split('M')[0]+'m ',
-		s = ( typeof topX[i]['times']['primary'].split('PT')[1].split('M')[1] === 'undefined' ? '0' : 
+		s = ( typeof topX[i]['times']['primary'].split('PT')[1].split('M')[1] === 'undefined' ? '00' : 
 		    topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] ) + 's ' ,
-		ms;
+		ms = '000';
+		if( typeof withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1] !== 'undefined' )
+		{
 		withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.').length == 1 ?
 		ms = '' : ms = withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[1].split('S')[0]+'ms';
-		
+		}
 		document.getElementById('t').innerHTML += 
 		'<tr> <td style="text-align: center; padding-right: 0px; "  > '+ (i+1 < 4 ? '<img class="trophy" src="https://www.speedrun.com/themes/goiwbf/'+ (i+1 == 1? '1st' : (i+1 == 2?'2nd' : '3rd' ) ) +'.png" >' : '' ) + (i+1) + ' </td> <td style="text-align: center;"> ' + (topX[i]['players'][0]['countrycode'] == ''? '' : '<img src="https://www.speedrun.com/images/flags/'+topX[i]['players'][0]['countrycode']+'.png " class="flags">  ')  + topX[i]['players'][0]['name'] + ' </td> <td style="text-align: center;"> <a target="_blank" href="'+ 
 		topX[i]['weblink']  +'">' + m		+ s		+ ms + '</a> '+topX[i]['date']+' </td> </tr>';
@@ -270,12 +272,14 @@ function getRunsRewind()
 		
 		var
 		m = topX[i]['times']['primary'].split('PT')[1].split('M')[0]+'m ',
-		s = ( typeof topX[i]['times']['primary'].split('PT')[1].split('M')[1] === 'undefined' ? '0' : 
+		s = ( typeof topX[i]['times']['primary'].split('PT')[1].split('M')[1] === 'undefined' ? '00' : 
 		    topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] ) + 's ' ,
-		ms;
+		ms = '000';
+		if( typeof withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1] !== 'undefined' )
+		{
 		withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.').length == 1 ?
 		ms = '' : ms = withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[1].split('S')[0]+'ms';
-		
+		}
 		document.getElementById('t').innerHTML += 
 		'<tr> <td style="text-align: center; padding-right: 0px; "  > '+ (i+1 < 4 ? '<img class="trophy" src="https://www.speedrun.com/themes/goiwbf/'+ (i+1 == 1? '1st' : (i+1 == 2?'2nd' : '3rd' ) ) +'.png" >' : '' ) + (i+1) + ' </td> <td style="text-align: center;"> ' + (topX[i]['players'][0]['countrycode'] == ''? '' : '<img src="https://www.speedrun.com/images/flags/'+topX[i]['players'][0]['countrycode']+'.png " class="flags">  ')  + topX[i]['players'][0]['name'] + ' </td> <td style="text-align: center;"> <a target="_blank" href="'+ 
 		topX[i]['weblink']  +'">' + m		+ s		+ ms + '</a> '+topX[i]['date']+' </td> </tr>';
