@@ -237,7 +237,8 @@ function getRuns()
 		
 		var
 		m = topX[i]['times']['primary'].split('PT')[1].split('M')[0]+'m ',
-		s = topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] + 's ' ,
+		s = ( typeof topX[i]['times']['primary'].split('PT')[1].split('M')[1] === 'undefined' ? '0' : 
+		    topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] ) + 's ' ,
 		ms;
 		withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.').length == 1 ?
 		ms = '' : ms = withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[1].split('S')[0]+'ms';
@@ -269,7 +270,8 @@ function getRunsRewind()
 		
 		var
 		m = topX[i]['times']['primary'].split('PT')[1].split('M')[0]+'m ',
-		s = topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] + 's ' ,
+		s = ( typeof topX[i]['times']['primary'].split('PT')[1].split('M')[1] === 'undefined' ? '0' : 
+		    topX[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[0].split('S')[0] ) + 's ' ,
 		ms;
 		withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.').length == 1 ?
 		ms = '' : ms = withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[1].split('S')[0]+'ms';
