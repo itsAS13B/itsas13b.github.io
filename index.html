@@ -315,7 +315,7 @@ function getRunsRewind()
 		ms = '' : ms = withoutobsoleteruns[i]['times']['primary'].split('PT')[1].split('M')[1].split('.')[1].split('S')[0]+'ms';
 		
 		document.getElementById('t').innerHTML += 
-		'<tr> <td style="text-align: center; padding-right: 0px; "  > '+ (i+1 < 4 ? '<img class="trophy" src="https://www.speedrun.com/themes/goiwbf/'+ (i+1 == 1? '1st' : (i+1 == 2?'2nd' : '3rd' ) ) +'.png" >' : '' ) + (i+1) + ' </td> <td style="text-align: center;"> ' + (topX[i]['players'][0]['countrycode'] == ''? '' : '<img src="https://www.speedrun.com/images/flags/'+topX[i]['players'][0]['countrycode']+'.png " class="flags">  ')  + topX[i]['players'][0]['name'] + ' </td> <td style="text-align: center;"> <a target="_blank" href="'+ 
+		'<tr> <td style="text-align: center; padding-right: 0px; "  > '+ (i+1 < 4 ? '<img class="trophy" src="'+ (i+1 == 1? '1st' : (i+1 == 2?'2nd' : '3rd' ) ) +'.png" >' : '' ) + (i+1) + ' </td> <td style="text-align: center;"> ' + (topX[i]['players'][0]['countrycode'] == ''? '' : '<img src="https://www.speedrun.com/images/flags/'+topX[i]['players'][0]['countrycode']+'.png " class="flags">  ')  + topX[i]['players'][0]['name'] + ' </td> <td style="text-align: center;"> <a target="_blank" href="'+ 
 		topX[i]['weblink']  +'">' + m		+ s		+ ms + '</a> '+topX[i]['date']+' </td> </tr>';
 	}
 }
